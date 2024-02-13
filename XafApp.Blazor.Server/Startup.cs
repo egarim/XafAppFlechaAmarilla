@@ -50,11 +50,13 @@ public class Startup {
                 .AddXpo((serviceProvider, options) => {
                     string connectionString = null;
 
-                    connectionString = InMemoryDataStoreProvider.ConnectionString;
-                    //if (Configuration.GetConnectionString("ConnectionString") != null)
-                    //{
-                    //    connectionString = Configuration.GetConnectionString("ConnectionString");
-                    //}
+                  
+                    if (Configuration.GetConnectionString("ConnectionString") != null)
+                    {
+                        connectionString = Configuration.GetConnectionString("ConnectionString");
+                    }
+                    //TODO uncomment for in memory database
+                    //connectionString = InMemoryDataStoreProvider.ConnectionString;
 #if EASYTEST
                     if(Configuration.GetConnectionString("EasyTestConnectionString") != null) {
                         connectionString = Configuration.GetConnectionString("EasyTestConnectionString");

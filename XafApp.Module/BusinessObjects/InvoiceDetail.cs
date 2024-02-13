@@ -31,11 +31,16 @@ namespace XafApp.Module.BusinessObjects
         public override void AfterConstruction()
         {
             base.AfterConstruction();
+            this.Unidades = 1;
             // Place your initialization code here (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument112834.aspx).
         }
         //xpa
 
 
+        decimal total;
+        decimal precioUnitario;
+        double unidades;
+        Producto producto;
         Invoice invoice;
 
         [Association("Invoice-InvoiceDetails")]
@@ -45,6 +50,54 @@ namespace XafApp.Module.BusinessObjects
             set => SetPropertyValue(nameof(Invoice), ref invoice, value);
         }
 
+
+
+        public Producto Producto
+        {
+            get => producto;
+            set => SetPropertyValue(nameof(Producto), ref producto, value);
+        }
+
+
+        public double Unidades
+        {
+            get => unidades;
+            set => SetPropertyValue(nameof(Unidades), ref unidades, value);
+        }
+
+        public decimal PrecioUnitario
+        {
+            get => precioUnitario;
+            set => SetPropertyValue(nameof(PrecioUnitario), ref precioUnitario, value);
+        }
+
+        
+        public decimal Total
+        {
+            get => total;
+            set => SetPropertyValue(nameof(Total), ref total, value);
+        }
+
+
+        protected override void OnChanged(string propertyName, object oldValue, object newValue)
+        {
+            if(propertyName==nameof(Producto))
+            {
+                if(newValue==null) 
+                {
+                    this.PrecioUnitario = 0;
+                }
+                if (newValue != null)
+                {
+                    this.PrecioUnitario = this.Producto.PrecioUnitario;
+                }
+            }
+            if (propertyName == nameof(Unidades))
+            {
+                this.Total = this.PrecioUnitario * (decimal)this.Unidades;
+            }
+                base.OnChanged(propertyName, oldValue, newValue);
+        }
         //[Action(Caption = "My UI Action", ConfirmationMessage = "Are you sure?", ImageName = "Attention", AutoCommit = true)]
         //public void ActionMethod() {
         //    // Trigger a custom business logic for the current record in the UI (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument112619.aspx).

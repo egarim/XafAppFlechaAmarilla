@@ -35,7 +35,7 @@ public class ApplicationBuilder : IDesignTimeApplicationFactory {
             })
             .AddNonPersistent();
         builder.AddBuildStep(application => {
-            connectionString = InMemoryDataStoreProvider.ConnectionString;
+            //connectionString = InMemoryDataStoreProvider.ConnectionString;
             application.ConnectionString = connectionString;
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached && application.CheckCompatibilityType == CheckCompatibilityType.DatabaseSchema) {

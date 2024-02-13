@@ -34,7 +34,18 @@ namespace XafApp.Module.BusinessObjects
             // Place your initialization code here (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument112834.aspx).
         }
 
+        Cliente cliente;
         DateTime fecha;
+
+        //xpo
+
+        
+        public Cliente Cliente
+        {
+            get => cliente;
+            set => SetPropertyValue(nameof(Cliente), ref cliente, value);
+        }
+
 
         public DateTime Fecha
         {
@@ -42,9 +53,11 @@ namespace XafApp.Module.BusinessObjects
             set => SetPropertyValue(nameof(Fecha), ref fecha, value);
         }
 
+        //A>C  B>C   C
 
         //xpcl
 
+        //[Association("Invoice-InvoiceDetails")]
         [Association("Invoice-InvoiceDetails"),DevExpress.Xpo.Aggregated()]
         public XPCollection<InvoiceDetail> InvoiceDetails
         {
