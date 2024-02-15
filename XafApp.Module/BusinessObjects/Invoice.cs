@@ -1,5 +1,6 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.ConditionalAppearance;
 using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Model;
 using DevExpress.Persistent.Base;
@@ -14,6 +15,10 @@ using System.Text;
 
 namespace XafApp.Module.BusinessObjects
 {
+    [Appearance("no editable cuando facturado es verdadero",Enabled =false,TargetItems ="*",Criteria = "Facturado = true")]
+    [Appearance("Rojo total negativo",BackColor ="Red", TargetItems = "Total", Criteria = "Total < 0",Priority =1)]
+    [Appearance("Verde total mas de 100", BackColor = "Green", TargetItems = "Total", Criteria = "Total > 100", Priority = 2)]
+    [Appearance("Ocultar comentario", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.ShowEmptySpace, TargetItems = "Comentarios", Criteria = "Facturado = true")]
     [DefaultClassOptions]
     //[ImageName("BO_Contact")]
     //[DefaultProperty("DisplayMemberNameForLookupEditorsOfThisType")]
@@ -34,12 +39,15 @@ namespace XafApp.Module.BusinessObjects
             // Place your initialization code here (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument112834.aspx).
         }
 
+        decimal total;
+        string comentarios;
+        bool facturado;
         Cliente cliente;
         DateTime fecha;
 
         //xpo
 
-        
+
         public Cliente Cliente
         {
             get => cliente;
@@ -57,6 +65,30 @@ namespace XafApp.Module.BusinessObjects
 
         //xpcl
 
+        //xpb
+
+
+        public bool Facturado
+        {
+            get => facturado;
+            set => SetPropertyValue(nameof(Facturado), ref facturado, value);
+        }
+
+
+        [Size(SizeAttribute.Unlimited)]
+        public string Comentarios
+        {
+            get => comentarios;
+            set => SetPropertyValue(nameof(Comentarios), ref comentarios, value);
+        }
+
+
+        [ImmediatePostData()]
+        public decimal Total
+        {
+            get => total;
+            set => SetPropertyValue(nameof(Total), ref total, value);
+        }
         //[Association("Invoice-InvoiceDetails")]
         [Association("Invoice-InvoiceDetails"),DevExpress.Xpo.Aggregated()]
         public XPCollection<InvoiceDetail> InvoiceDetails
